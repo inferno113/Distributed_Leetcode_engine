@@ -1,0 +1,26 @@
+{
+  "name": "distributed-code-execution-engine",
+  "version": "1.0.0",
+  "description": "Distributed code execution engine with api, queue and workers",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start:api": "npm --prefix api-server run start",
+    "start:worker": "npm --prefix worker run start",
+    "dev:api": "npm --prefix api-server run dev",
+    "dev:worker": "npm --prefix worker run dev"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/inferno113/Distributed_Leetcode_engine.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/inferno113/Distributed_Leetcode_engine/issues"
+  },
+  "homepage": "https://github.com/inferno113/Distributed_Leetcode_engine#readme",
+  "private": true
+}
