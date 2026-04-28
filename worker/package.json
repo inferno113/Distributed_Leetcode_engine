@@ -1,0 +1,19 @@
+{
+  "name": "worker",
+  "version": "1.0.0",
+  "description": "Worker process that consumes submission jobs and executes code in sandbox",
+  "type": "module",
+  "scripts": {
+    "start": "node queue-consumer/worker.js",
+    "dev": "nodemon queue-consumer/worker.js"
+  },
+  "dependencies": {
+    "bullmq": "^5.76.2",
+    "dotenv": "^17.4.2",
+    "ioredis": "^5.10.1",
+    "mongoose": "^9.5.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
+}
