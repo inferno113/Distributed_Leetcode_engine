@@ -1,6 +1,6 @@
 import "dotenv/config";
 import mongoose from "mongoose";
-import { Worker } from "bullmq";
+import { Worker, QueueScheduler } from "bullmq";
 
 import Submission from "../models/submission.model.js";
 import { executeSubmission } from "../executor/executor.js";
@@ -17,6 +17,11 @@ if (!MONGODB_URI) {
 async function start() {
   await mongoose.connect(MONGODB_URI);
   console.log("Worker connected to MongoDB");
+
+  // start a QueueScheduler to handle stalled jobs and retries
+  const scheduler = new QueueScheduler(QUEUE_NAME, { connection });
+
+  const concurrency = Number(process.env.WORKER_CONCURRENCY || 2);
 
   const worker = new Worker(
     QUEUE_NAME,
@@ -61,12 +66,24 @@ async function start() {
     { connection }
   );
 
+  worker.on("active", (job) => {
+    console.log(`Job ${job.id} is active`);
+  });
+
   worker.on("completed", (job) => {
     console.log(`Job ${job.id} completed`);
   });
 
   worker.on("failed", (job, err) => {
     console.error(`Job ${job?.id} failed`, err?.message ?? err);
+  });
+
+  worker.on("stalled", (job) => {
+    console.warn(`Job ${job?.id} stalled and will be retried`);
+  });
+
+  worker.on("error", (err) => {
+    console.error("Worker error", err);
   });
 
   console.log("Worker is listening for jobs");
