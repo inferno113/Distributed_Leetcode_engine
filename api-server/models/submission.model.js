@@ -29,6 +29,10 @@ const submissionSchema = new mongoose.Schema(
       type: String,
       default: ""
     },
+    exitCode: {
+      type: Number,
+      default: null
+    },
     executionTime: {
       type: Number,
       default: null

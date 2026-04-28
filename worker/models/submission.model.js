@@ -10,6 +10,7 @@ const submissionSchema = new mongoose.Schema(
     status: { type: String, enum: ALLOWED_STATUSES, default: "QUEUED", index: true },
     output: { type: String, default: "" },
     error: { type: String, default: "" },
+    exitCode: { type: Number, default: null },
     executionTime: { type: Number, default: null }
   },
   { timestamps: { createdAt: true, updatedAt: false } }

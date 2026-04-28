@@ -51,3 +51,19 @@ const createSubmission = async (req, res) => {
 };
 
 export { createSubmission };
+
+const getSubmission = async (req, res) => {
+  const { id } = req.params ?? {};
+  if (!id) return res.status(400).json({ message: "submission id required" });
+
+  try {
+    const submission = await Submission.findById(id).lean();
+    if (!submission) return res.status(404).json({ message: "Submission not found" });
+    return res.status(200).json({ submission });
+  } catch (err) {
+    console.error("Failed to fetch submission", err);
+    return res.status(500).json({ message: "Internal error fetching submission" });
+  }
+};
+
+export { getSubmission };

@@ -43,14 +43,18 @@ async function start() {
           status: "COMPLETED",
           output: result.stdout ?? "",
           error: result.stderr ?? "",
+          exitCode: result.exitCode ?? null,
           executionTime: result.executionTime ?? null
         });
       } catch (err) {
         console.error("Execution failed", err);
-        await Submission.findByIdAndUpdate(submissionId, {
+        // try to capture stderr/exit info if available on the error
+        const details = {
           status: "FAILED",
-          error: String(err)
-        });
+          error: err?.message ?? String(err),
+          exitCode: err?.exitCode ?? null
+        };
+        await Submission.findByIdAndUpdate(submissionId, details);
         throw err;
       }
     },
